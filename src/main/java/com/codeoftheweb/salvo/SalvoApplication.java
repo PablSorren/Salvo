@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-//probar en http://localhost:8080/
+//probar en http://localhost:8080/rest
 
 @SpringBootApplication
 public class SalvoApplication {
