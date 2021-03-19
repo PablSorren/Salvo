@@ -5,8 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 public class Game {
@@ -45,9 +46,10 @@ public class Game {
         gamePlayers.add(gamePlayer);
     }
 
-    @JsonIgnore
-    public Set<GamePlayer> getGamePlayers(){
-        return gamePlayers;
+
+    public List<Player> getPlayer(){
+        return gamePlayers.stream().map(p -> p.getPlayer()).collect(toList());
     }
+
 
 }

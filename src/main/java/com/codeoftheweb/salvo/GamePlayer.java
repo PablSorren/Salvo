@@ -58,14 +58,6 @@ public class GamePlayer {
         return playerJoinDate;
     }
 
-    /*//SOLO PARA PRUEBA
-    public Long getGameId() {
-        return game.getGameId();
-    }
-    public Long getPlayerId(){
-        return player.getUserId();
-    }
-    public String getUserName() {
-        return player.getUserName();
-    }*/
+
+
 }
