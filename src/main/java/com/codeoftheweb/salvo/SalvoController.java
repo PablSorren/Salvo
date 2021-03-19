@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,17 +14,25 @@ import java.util.stream.Collectors;
 public class SalvoController {
 
      @Autowired
-    GamePlayerRepository gamePlayerRepository;
+    GameRepository gameRepository;
 
     @RequestMapping("/games")
-     public List<Object> getGamesId(){
-         return gamePlayerRepository
+     public List< Map<String, Object> > getGamesId(){
+         return gameRepository
                  .findAll()
                  .stream()
-                 .map(gamePlayer -> gamePlayer.getGame().getGameId())
+                 .map(game -> gamesDTO(game))
                  .collect(Collectors.toList());
      }
 
+
+     private Map<String, Object> gamesDTO(Game game){
+
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id", game.getGameId() );
+        dto.put("created", game.getDateAndTimeOfCreation());
+        return  dto;
+     }
 
 
 
