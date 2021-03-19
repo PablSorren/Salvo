@@ -41,7 +41,7 @@ public class Player {
         this.userName = email;
     }
 
-    public long getUserId() {
+    public long getId() {
         return id;
     }
 

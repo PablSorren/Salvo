@@ -46,10 +46,15 @@ public class Game {
         gamePlayers.add(gamePlayer);
     }
 
+    public Set<GamePlayer> getGamePlayers() {
+        return gamePlayers;
+    }
 
     public List<Player> getPlayer(){
         return gamePlayers.stream().map(p -> p.getPlayer()).collect(toList());
     }
+
+
 
 
 }
