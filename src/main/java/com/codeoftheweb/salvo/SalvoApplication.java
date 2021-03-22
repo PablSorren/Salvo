@@ -32,31 +32,31 @@ public class SalvoApplication {
 			LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
 
 			//SAVING NEW GAMES
-			Game game1 = games.save(new Game(now));
-			Game game2 = games.save(new Game(now));
-			Game game3 = games.save(new Game(now));
-			Game game4 = games.save(new Game(now));
-			Game game5 = games.save(new Game(now));
-			Game game6 = games.save(new Game(now));
+			Game game1 = games.save(new Game(LocalDateTime.of(2018, 2, 17, 3, 20, 15)));
+			Game game2 = games.save(new Game(LocalDateTime.of(2018, 2, 17, 4, 20, 15)));
+			Game game3 = games.save(new Game(LocalDateTime.of(2018, 2, 17, 5, 20, 15)));
+			Game game4 = games.save(new Game(LocalDateTime.of(2018, 2, 17, 6, 20, 15)));
+			Game game5 = games.save(new Game(LocalDateTime.of(2018, 2, 17, 7, 20, 15)));
+			Game game6 = games.save(new Game(LocalDateTime.of(2018, 2, 17, 8, 20, 15)));
 
 
 			//SAVING NEW GAMES CONFIGS
-			gamePlayer.save(new GamePlayer(p1,game1, LocalDateTime.of(2018, 2, 17, 3, 20, 15)));
-			gamePlayer.save(new GamePlayer(p2,game1, LocalDateTime.of(2018, 2, 17, 3, 20, 15)));
+			gamePlayer.save(new GamePlayer(p1,game1));
+			gamePlayer.save(new GamePlayer(p2,game1));
 
-			gamePlayer.save(new GamePlayer(p2,game2, LocalDateTime.of(2018, 2, 17, 4, 20, 15)));
-			gamePlayer.save(new GamePlayer(p1,game2, LocalDateTime.of(2018, 2, 17, 4, 20, 15)));
+			gamePlayer.save(new GamePlayer(p2,game2));
+			gamePlayer.save(new GamePlayer(p1,game2));
 
-			gamePlayer.save(new GamePlayer(p2,game3, LocalDateTime.of(2018, 2, 17, 5, 20, 15)));
-			gamePlayer.save(new GamePlayer(p4,game3, LocalDateTime.of(2018, 2, 17, 5, 20, 15)));
+			gamePlayer.save(new GamePlayer(p2,game3));
+			gamePlayer.save(new GamePlayer(p4,game3));
 
-			gamePlayer.save(new GamePlayer(p1,game4, LocalDateTime.of(2018, 2, 17, 6, 20, 15)));
-			gamePlayer.save(new GamePlayer(p2,game4, LocalDateTime.of(2018, 2, 17, 6, 20, 15)));
+			gamePlayer.save(new GamePlayer(p1,game4));
+			gamePlayer.save(new GamePlayer(p2,game4));
 
-			gamePlayer.save(new GamePlayer(p1,game5, LocalDateTime.of(2018, 2, 17, 7, 20, 15)));
-			gamePlayer.save(new GamePlayer(p4,game5, LocalDateTime.of(2018, 2, 17, 7, 20, 15)));
+			gamePlayer.save(new GamePlayer(p1,game5));
+			gamePlayer.save(new GamePlayer(p4,game5));
 
-			gamePlayer.save(new GamePlayer(p3,game6, LocalDateTime.of(2018, 2, 17, 8, 20, 15)));
+			gamePlayer.save(new GamePlayer(p3,game6));
 
 
 

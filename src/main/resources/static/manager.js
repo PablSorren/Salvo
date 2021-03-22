@@ -5,7 +5,7 @@ $(function() {
   }
   // load and display JSON sent by server for /players
   function loadData() {
-    $.get("/players")
+    $.get("players")
     .done(function(data) {
       showOutput(JSON.stringify(data, null, 2));
     })
@@ -28,7 +28,7 @@ $(function() {
           'Content-Type': 'application/json'
       },
       dataType: "text",
-      url: "/players",
+      url: "players",
       data: JSON.stringify({ "userName": userName })
     })
     .done(function( ) {

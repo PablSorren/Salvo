@@ -41,7 +41,7 @@ public class Player {
         this.userName = email;
     }
 
-    public long getId() {
+    public long getUserId() {
         return id;
     }
 
@@ -51,7 +51,7 @@ public class Player {
 
 
     public void addGamePlayer(GamePlayer gamePlayer) {
-        //gamePlayer.setPlayer(this);
+
         gamePlayers.add(gamePlayer);
     }
 

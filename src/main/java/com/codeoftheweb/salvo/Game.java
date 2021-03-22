@@ -42,19 +42,18 @@ public class Game {
 
 
     public void addGamePlayer(GamePlayer gamePlayer){
-        //gamePlayer.setGame(this);
+
         gamePlayers.add(gamePlayer);
     }
 
     public Set<GamePlayer> getGamePlayers() {
+
         return gamePlayers;
     }
 
-    public List<Player> getPlayer(){
+    public List<Player> getPlayers(){
+
         return gamePlayers.stream().map(p -> p.getPlayer()).collect(toList());
     }
-
-
-
 
 }

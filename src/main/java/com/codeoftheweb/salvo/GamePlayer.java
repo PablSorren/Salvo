@@ -30,10 +30,11 @@ public class GamePlayer {
         playerJoinDate = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
     }
 
-    public GamePlayer(Player player, Game game, LocalDateTime date){
+    public GamePlayer(Player player, Game game){
+        this();
         this.player = player;
         this.game = game;
-        this.playerJoinDate = date;
+
     }
 
     public void setPlayer(Player player) {
