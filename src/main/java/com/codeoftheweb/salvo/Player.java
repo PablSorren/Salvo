@@ -60,4 +60,6 @@ public class Player {
         return gamePlayers.stream().map(g -> g.getGame()).collect(toList());
     }
 
+
+
 }

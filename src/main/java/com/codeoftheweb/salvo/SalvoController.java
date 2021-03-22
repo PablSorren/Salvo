@@ -16,7 +16,6 @@ public class SalvoController {
      @Autowired
     GameRepository gameRepository;
 
-
     @RequestMapping("/games")
      public List< Map<String, Object> > getGames(){
          return gameRepository
@@ -52,6 +51,8 @@ public class SalvoController {
         dto.put("player" , playerDTO(gamePlayer.getPlayer()));
         return dto;
      }
+
+
 
     private Map<String, Object> playerDTO(Player player){
 

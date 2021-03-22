@@ -5,6 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 @Entity
@@ -49,6 +51,14 @@ public class GamePlayer {
         return player;
     }
 
+    public long getPlayerId(){
+        return player.getUserId();
+    }
+
+    public String getUserName(){
+        return player.getUserName();
+    }
+
     public Long getId(){
         return id;
     }
@@ -60,6 +70,7 @@ public class GamePlayer {
     public LocalDateTime getPlayerJoinDate(){
         return playerJoinDate;
     }
+
 
 
 
