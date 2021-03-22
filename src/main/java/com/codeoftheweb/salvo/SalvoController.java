@@ -2,6 +2,7 @@ package com.codeoftheweb.salvo;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,20 @@ public class SalvoController {
      @Autowired
     GameRepository gameRepository;
 
-    @RequestMapping("/games")
+    @Autowired
+    PlayerRepository playerRepository ;
+
+    @GetMapping("/players")
+    public List< Map<String, Object> > getPlayers(){
+        return playerRepository
+                .findAll()
+                .stream()
+                .map(player -> playerDTO(player))
+                .collect(Collectors.toList());
+    }
+
+
+    @GetMapping("/games")
      public List< Map<String, Object> > getGames(){
          return gameRepository
                  .findAll()
@@ -29,11 +43,12 @@ public class SalvoController {
      private Map<String, Object> gamesDTO(Game game){
 
         Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("id", game.getGameId() );
+        dto.put("game_Id", game.getGameId() );
         dto.put("created", game.getDateAndTimeOfCreation());
         dto.put("gamePlayers", getGamePlayers(game));
         return  dto;
      }
+
 
     private List< Map<String, Object> > getGamePlayers(Game game){
         return   game
@@ -47,7 +62,7 @@ public class SalvoController {
      private Map<String, Object> gamePlayerDTO(GamePlayer gamePlayer){
 
         Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("id", gamePlayer.getId());
+        dto.put("gamePlayer_id", gamePlayer.getId());
         dto.put("player" , playerDTO(gamePlayer.getPlayer()));
         return dto;
      }
@@ -57,7 +72,7 @@ public class SalvoController {
     private Map<String, Object> playerDTO(Player player){
 
         Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("id", player.getUserId());
+        dto.put("player_id", player.getUserId());
         dto.put("email" , player.getUserName());
         return dto;
     }
