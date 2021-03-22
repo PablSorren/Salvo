@@ -25,7 +25,7 @@ public class SalvoController {
         return playerRepository
                 .findAll()
                 .stream()
-                .map(player -> playerDTO(player))
+                .map(Player::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -63,19 +63,10 @@ public class SalvoController {
 
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("gamePlayer_id", gamePlayer.getId());
-        dto.put("player" , playerDTO(gamePlayer.getPlayer()));
+        dto.put("player" , gamePlayer.getPlayer().toDTO());
         return dto;
      }
 
-
-
-    private Map<String, Object> playerDTO(Player player){
-
-        Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("player_id", player.getUserId());
-        dto.put("email" , player.getUserName());
-        return dto;
-    }
 
 
 }
