@@ -61,14 +61,4 @@ public class Player {
     }
 
 
-
-    public Map<String, Object> toDTO(){
-
-        Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("player_id", getUserId());
-        dto.put("email" , getUserName());
-        return dto;
-    }
-
-
 }
