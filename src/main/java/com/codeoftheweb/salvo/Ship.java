@@ -1,22 +1,56 @@
 package com.codeoftheweb.salvo;
 
+import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.*;
 
-
+@Entity
 public class Ship {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
-    private long Id;
+    private long id;
 
     private ShipType type;
 
-    private List<String> locations;
+    @ElementCollection
+    @Column(name = "locations")
+    private List<String> locations ;
+
+    @ManyToOne(fetch =  FetchType.EAGER)
+    @JoinColumn(name = "gamePlayer_id")
+    private GamePlayer gamePlayer;
+
+    public Ship(){}
+
+    public Ship(ShipType type, List<String> locations, GamePlayer gamePlayer){
+        this.type = type;
+        this.locations = locations;
+        this.gamePlayer = gamePlayer;
+        this.gamePlayer.addShip(this);
+    }
+
+    public GamePlayer getGamePlayer(){
+        return gamePlayer;
+    }
+
+    public List<String> getLocations(){
+        return locations;
+    }
+
+    public long getShipId(){
+        return id;
+    }
+
+    public ShipType getShipType(){
+        return type;
+    }
+
+    public Long getPlayerId(){
+        return gamePlayer.getPlayerId();
+    }
 
 }

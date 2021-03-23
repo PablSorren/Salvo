@@ -2,10 +2,8 @@ package com.codeoftheweb.salvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.*;
-
 import static java.util.stream.Collectors.toList;
 
 @Entity // Indica que JPA construya una tabla para esta clase

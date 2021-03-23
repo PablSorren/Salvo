@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.*;
 
-//probar en http://localhost:8080/rest
 
 @SpringBootApplication
 public class SalvoApplication {
@@ -18,7 +18,7 @@ public class SalvoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(PlayerRepository players, GameRepository games, GamePlayerRepository gamePlayer) {
+	public CommandLineRunner initData(PlayerRepository players, GameRepository games, GamePlayerRepository gamePlayer, ShipRepository ships) {
 		return (args) -> {
 
 
@@ -41,23 +41,32 @@ public class SalvoApplication {
 
 
 			//SAVING NEW GAMES CONFIGS
-			gamePlayer.save(new GamePlayer(p1,game1));
-			gamePlayer.save(new GamePlayer(p2,game1));
+			GamePlayer gp1 = gamePlayer.save(new GamePlayer(p1,game1));
+			GamePlayer gp2 =gamePlayer.save(new GamePlayer(p2,game1));
 
-			gamePlayer.save(new GamePlayer(p2,game2));
-			gamePlayer.save(new GamePlayer(p1,game2));
+			GamePlayer gp3 =gamePlayer.save(new GamePlayer(p2,game2));
+			GamePlayer gp4 =gamePlayer.save(new GamePlayer(p1,game2));
 
-			gamePlayer.save(new GamePlayer(p2,game3));
-			gamePlayer.save(new GamePlayer(p4,game3));
+			GamePlayer gp5 =gamePlayer.save(new GamePlayer(p2,game3));
+			GamePlayer gp6 =gamePlayer.save(new GamePlayer(p4,game3));
 
-			gamePlayer.save(new GamePlayer(p1,game4));
-			gamePlayer.save(new GamePlayer(p2,game4));
+			GamePlayer gp7 =gamePlayer.save(new GamePlayer(p1,game4));
+			GamePlayer gp8 =gamePlayer.save(new GamePlayer(p2,game4));
 
-			gamePlayer.save(new GamePlayer(p1,game5));
-			gamePlayer.save(new GamePlayer(p4,game5));
+			GamePlayer gp9 =gamePlayer.save(new GamePlayer(p1,game5));
+			GamePlayer gp10 =gamePlayer.save(new GamePlayer(p4,game5));
 
-			gamePlayer.save(new GamePlayer(p3,game6));
+			GamePlayer gp11 =gamePlayer.save(new GamePlayer(p3,game6));
 
+			//SAVIN SHIPS
+
+			Ship s1 = ships.save(new Ship(ShipType.Destroyer,new ArrayList<String>(Arrays.asList("H2", "H3","H4")), gp1));
+
+
+			Ship s2 = ships.save(new Ship(ShipType.Submarine,new ArrayList<String>(Arrays.asList("E1", "F1","G1")), gp1));
+
+
+			Ship s3 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("B4", "B5")), gp1));
 
 
 		};
