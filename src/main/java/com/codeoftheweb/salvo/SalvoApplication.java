@@ -42,7 +42,7 @@ public class SalvoApplication {
 
 			//SAVING NEW GAMES CONFIGS
 			GamePlayer gp1 = gamePlayer.save(new GamePlayer(p1,game1));
-			GamePlayer gp2 =gamePlayer.save(new GamePlayer(p2,game1));
+			GamePlayer gp2 = gamePlayer.save(new GamePlayer(p2,game1));
 
 			GamePlayer gp3 =gamePlayer.save(new GamePlayer(p2,game2));
 			GamePlayer gp4 =gamePlayer.save(new GamePlayer(p1,game2));
@@ -67,6 +67,8 @@ public class SalvoApplication {
 
 
 			Ship s3 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("B4", "B5")), gp1));
+
+			Ship s4 = ships.save(new Ship(ShipType.Carrier,new ArrayList<String>(Arrays.asList("A2","A3","A4", "A5", "A6")), gp3));
 
 
 		};
