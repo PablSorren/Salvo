@@ -88,4 +88,21 @@ public class GamePlayer {
     public void addShip(Ship ship) {
         ships.add(ship);
     }
+
+
+    public Map<String, Object> toDTO(){
+
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("gamePlayer_id", id);
+        dto.put("player" ,player.toDTO());
+        return dto;
+    }
+
+    public Map<String, Object> gameView(){
+
+        Map<String, Object> gameViewMap = game.toDTO();
+        gameViewMap.put("ships", ships.stream().map(Ship::toDTO));
+        return gameViewMap;
+    }
+
 }

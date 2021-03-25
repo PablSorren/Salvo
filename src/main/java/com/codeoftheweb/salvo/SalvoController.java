@@ -2,11 +2,12 @@ package com.codeoftheweb.salvo;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -14,14 +15,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class SalvoController {
 
-     @Autowired
+    @Autowired
     GameRepository gameRepository;
 
     @Autowired
-    PlayerRepository playerRepository ;
+    PlayerRepository playerRepository;
+
+    @Autowired
+    GamePlayerRepository gamePlayerRepository;
 
     @GetMapping("/players")
-    public List< Map<String, Object> > getPlayers(){
+    public List<Map<String, Object>> getPlayers() {
         return playerRepository
                 .findAll()
                 .stream()
@@ -29,44 +33,40 @@ public class SalvoController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/game_view/{gamePlayerId}")
+    public ResponseEntity<Map<String, Object>> gamePlayer(@PathVariable long gamePlayerId) {
+
+        Optional<GamePlayer> gp = gamePlayerRepository.findById(gamePlayerId);
+
+        ResponseEntity<Map<String, Object>> response;
+
+        if (gp.isEmpty()) {
+
+            response = new ResponseEntity<>(
+                    toMap("Problem: ", String.format("ID %d does not exists", gamePlayerId)),
+                    HttpStatus.UNAUTHORIZED);
+        } else {
+
+            response = new ResponseEntity<>(gp.get().gameView(), HttpStatus.OK);
+        }
+
+        return response;
+    }
+
+    private <K, V> Map<K, V> toMap(K key, V value) {
+        Map<K, V> map = new LinkedHashMap<>();
+        map.put(key, value);
+        return map;
+    }
+
 
     @GetMapping("/games")
-     public List< Map<String, Object> > getGames(){
-         return gameRepository
-                 .findAll()
-                 .stream()
-                 .map(game -> gamesDTO(game))
-                 .collect(Collectors.toList());
-     }
-
-
-     private Map<String, Object> gamesDTO(Game game){
-
-        Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("game_Id", game.getGameId() );
-        dto.put("created", game.getDateAndTimeOfCreation());
-        dto.put("gamePlayers", getGamePlayers(game));
-        return  dto;
-     }
-
-
-    private List< Map<String, Object> > getGamePlayers(Game game){
-        return   game
-                .getGamePlayers()
+    public List<Map<String, Object>> getGames() {
+        return gameRepository
+                .findAll()
                 .stream()
-                .map(gamePlayer -> gamePlayerDTO(gamePlayer))
+                .map(Game::toDTO)
                 .collect(Collectors.toList());
-     }
-
-
-     private Map<String, Object> gamePlayerDTO(GamePlayer gamePlayer){
-
-        Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("gamePlayer_id", gamePlayer.getId());
-        dto.put("player" , gamePlayer.getPlayer().toDTO());
-        return dto;
-     }
-
-
+    }
 
 }

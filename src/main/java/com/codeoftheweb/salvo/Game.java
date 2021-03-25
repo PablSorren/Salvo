@@ -54,5 +54,38 @@ public class Game {
         return gamePlayers.stream().map(p->p.getPlayer()).collect(Collectors.toList());
     }
 
+    public Set<Ship> getShips(){
+        Set<Ship> ships = new HashSet<>();
+
+        for(GamePlayer gp : gamePlayers) {
+
+           Set<Ship> tempShipSet = gp.getShips();
+
+           for(Ship ship : tempShipSet) {
+               ships.add(ship);
+           }
+
+        }
+        return ships;
+    }
+
+
+    public Map<String, Object> toDTO(){
+
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("game_Id", id);
+        dto.put("created", dateAndTimeOfCreation);
+        dto.put("gamePlayers", getGamePlayerList());
+        return  dto;
+    }
+
+
+    private List< Map<String, Object> > getGamePlayerList(){
+        return   gamePlayers
+                .stream()
+                .map(gamePlayer -> gamePlayer.toDTO())
+                .collect(Collectors.toList());
+    }
+
 
 }

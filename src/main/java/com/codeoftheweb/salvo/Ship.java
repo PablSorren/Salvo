@@ -53,4 +53,11 @@ public class Ship {
         return gamePlayer.getPlayerId();
     }
 
+    public Map<String, Object> toDTO(){
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("type", type);
+        dto.put("locations" , locations);
+        return dto;
+    }
+
 }
