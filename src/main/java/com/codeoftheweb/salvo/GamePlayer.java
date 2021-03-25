@@ -93,9 +93,9 @@ public class GamePlayer {
     public Map<String, Object> toDTO(){
 
         Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("gamePlayer_id", id);
+        dto.put("id", id);
         dto.put("player" ,player.toDTO());
-        dto.put("join_Date", playerJoinDate);
+        dto.put("joinDate", playerJoinDate);
         return dto;
     }
 
