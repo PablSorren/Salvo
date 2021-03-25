@@ -43,7 +43,7 @@ public class SalvoController {
         if (gp.isEmpty()) {
 
             response = new ResponseEntity<>(
-                    toMap("Problem: ", String.format("ID %d does not exists", gamePlayerId)),
+                    toMap("ERROR", String.format("Game player id %d does not exists", gamePlayerId)),
                     HttpStatus.UNAUTHORIZED);
         } else {
 
