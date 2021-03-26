@@ -53,13 +53,6 @@ public class SalvoController {
         return response;
     }
 
-    private <K, V> Map<K, V> toMap(K key, V value) {
-        Map<K, V> map = new LinkedHashMap<>();
-        map.put(key, value);
-        return map;
-    }
-
-
     @GetMapping("/games")
     public List<Map<String, Object>> getGames() {
         return gameRepository
@@ -68,5 +61,14 @@ public class SalvoController {
                 .map(Game::toDTO)
                 .collect(Collectors.toList());
     }
+
+
+    private <K, V> Map<K, V> toMap(K key, V value) {
+        Map<K, V> map = new LinkedHashMap<>();
+        map.put(key, value);
+        return map;
+    }
+
+
 
 }

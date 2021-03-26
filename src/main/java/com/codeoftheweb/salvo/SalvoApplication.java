@@ -23,10 +23,10 @@ public class SalvoApplication {
 
 
 			//SAVING NEW PLAYERS
-			Player p1 = players.save(new Player("j.bauer@ctu.gov"));
-			Player p2 = players.save(new Player("c.obrian@ctu.gov"));
-			Player p3 = players.save(new Player("d.palmer@whitehouse.gov"));
-			Player p4 = players.save(new Player("t.almeida@ctu.gov"));
+			Player jbauer = players.save(new Player("j.bauer@ctu.gov"));
+			Player cobrian = players.save(new Player("c.obrian@ctu.gov"));
+			Player dpalmer = players.save(new Player("d.palmer@whitehouse.gov"));
+			Player talmeida = players.save(new Player("t.almeida@ctu.gov"));
 
 
 			LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
@@ -41,34 +41,46 @@ public class SalvoApplication {
 
 
 			//SAVING NEW GAMES CONFIGS
-			GamePlayer gp1 = gamePlayer.save(new GamePlayer(p1,game1));
-			GamePlayer gp2 = gamePlayer.save(new GamePlayer(p2,game1));
+			GamePlayer gp1 = gamePlayer.save(new GamePlayer(jbauer,game1));
+			GamePlayer gp2 = gamePlayer.save(new GamePlayer(cobrian,game1));
 
-			GamePlayer gp3 =gamePlayer.save(new GamePlayer(p2,game2));
-			GamePlayer gp4 =gamePlayer.save(new GamePlayer(p1,game2));
+			GamePlayer gp3 =gamePlayer.save(new GamePlayer(cobrian,game2));
+			GamePlayer gp4 =gamePlayer.save(new GamePlayer(jbauer,game2));
 
-			GamePlayer gp5 =gamePlayer.save(new GamePlayer(p2,game3));
-			GamePlayer gp6 =gamePlayer.save(new GamePlayer(p4,game3));
+			GamePlayer gp5 =gamePlayer.save(new GamePlayer(cobrian,game3));
+			GamePlayer gp6 =gamePlayer.save(new GamePlayer(talmeida,game3));
 
-			GamePlayer gp7 =gamePlayer.save(new GamePlayer(p1,game4));
-			GamePlayer gp8 =gamePlayer.save(new GamePlayer(p2,game4));
+			GamePlayer gp7 =gamePlayer.save(new GamePlayer(jbauer,game4));
+			GamePlayer gp8 =gamePlayer.save(new GamePlayer(cobrian,game4));
 
-			GamePlayer gp9 =gamePlayer.save(new GamePlayer(p1,game5));
-			GamePlayer gp10 =gamePlayer.save(new GamePlayer(p4,game5));
+			GamePlayer gp9 =gamePlayer.save(new GamePlayer(jbauer,game5));
+			GamePlayer gp10 =gamePlayer.save(new GamePlayer(talmeida,game5));
 
-			GamePlayer gp11 =gamePlayer.save(new GamePlayer(p3,game6));
+			GamePlayer gp11 =gamePlayer.save(new GamePlayer(dpalmer,game6));
 
 			//SAVIN SHIPS
 
+			//GAME #1
 			Ship s1 = ships.save(new Ship(ShipType.Destroyer,new ArrayList<String>(Arrays.asList("H2", "H3","H4")), gp1));
-
-
 			Ship s2 = ships.save(new Ship(ShipType.Submarine,new ArrayList<String>(Arrays.asList("E1", "F1","G1")), gp1));
-
-
 			Ship s3 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("B4", "B5")), gp1));
 
-			Ship s4 = ships.save(new Ship(ShipType.Carrier,new ArrayList<String>(Arrays.asList("A2","A3","A4", "A5", "A6")), gp3));
+			Ship s4 = ships.save(new Ship(ShipType.Destroyer,new ArrayList<String>(Arrays.asList("B5", "C5", "D5")), gp2));
+			Ship s5 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("F1", "F2")), gp2));
+
+			//GAME #2
+			Ship s6 = ships.save(new Ship(ShipType.Destroyer,new ArrayList<String>(Arrays.asList("B5", "C5", "D5")), gp4));
+			Ship s7 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("C6", "C7")), gp4));
+
+			Ship s8 = ships.save(new Ship(ShipType.Submarine,new ArrayList<String>(Arrays.asList("A2", "A3", "A4")), gp3));
+			Ship s9 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("G6", "H6")), gp3));
+
+			//GAME #3
+			Ship s10 = ships.save(new Ship(ShipType.Destroyer,new ArrayList<String>(Arrays.asList("B5", "C5", "D5")), gp5));
+			Ship s11 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("C6", "C7")), gp5));
+
+			Ship s12 = ships.save(new Ship(ShipType.Submarine,new ArrayList<String>(Arrays.asList("A2", "A3", "A4")), gp6));
+			Ship s13 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("G6", "H6")), gp6));
 
 
 		};
