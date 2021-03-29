@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -31,6 +32,9 @@ public class GamePlayer {
     @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
     private Set<Ship> ships;
 
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+    private Set<Salvo> salvoes;
+
 
     private LocalDateTime playerJoinDate;
 
@@ -38,6 +42,7 @@ public class GamePlayer {
 
         playerJoinDate = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
         this.ships = new HashSet<>();
+        this.salvoes = new HashSet<>();
     }
 
     public GamePlayer(Player player, Game game){
@@ -90,6 +95,15 @@ public class GamePlayer {
     }
 
 
+    public Set<Salvo> getSalvoes() {
+        return salvoes;
+    }
+
+    public void addSalvo(Salvo salvo) {
+        salvoes.add(salvo);
+    }
+
+
     public Map<String, Object> toDTO(){
 
         Map<String, Object> dto = new LinkedHashMap<>();
@@ -103,6 +117,12 @@ public class GamePlayer {
 
         Map<String, Object> gameViewMap = game.toDTO();
         gameViewMap.put("ships", ships.stream().map(Ship::toDTO));
+        gameViewMap.put("salvoes",game.getGamePlayers()
+                                         .stream()
+                                         .flatMap(gp -> gp.getSalvoes().stream())
+                                         .map(Salvo::toDto)
+                                         .sorted()
+                                         .collect(Collectors.toList()));
         return gameViewMap;
     }
 
