@@ -34,10 +34,6 @@ public class Player {
         this.email = email;
     }
 
-    public void setEmail(String email) {
-
-        this.email = email;
-    }
 
     public long getUserId() {
         return id;
@@ -57,8 +53,6 @@ public class Player {
     public List<Game> getGames() {
         return gamePlayers.stream().map(g -> g.getGame()).collect(toList());
     }
-
-
 
     public Map<String, Object> toDTO(){
 
