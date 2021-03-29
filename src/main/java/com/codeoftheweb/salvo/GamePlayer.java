@@ -121,7 +121,6 @@ public class GamePlayer {
                                          .stream()
                                          .flatMap(gp -> gp.getSalvoes().stream())
                                          .map(Salvo::toDto)
-                                         .sorted()
                                          .collect(Collectors.toList()));
         return gameViewMap;
     }
