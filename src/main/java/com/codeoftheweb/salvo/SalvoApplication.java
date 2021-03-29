@@ -96,7 +96,10 @@ public class SalvoApplication {
 			salvo.save(new Salvo(gp4, 2, new ArrayList<>(Arrays.asList("A3", "H6")) ) );
 
 
-
+			salvo.save(new Salvo(gp5, 1, new ArrayList<>(Arrays.asList("G6", "H6", "A4")) ) );
+			salvo.save(new Salvo(gp5, 2, new ArrayList<>(Arrays.asList("A2", "A3", "D8")) ) );
+			salvo.save(new Salvo(gp6, 1, new ArrayList<>(Arrays.asList("H1", "H2", "H3")) ) );
+			salvo.save(new Salvo(gp6, 2, new ArrayList<>(Arrays.asList("E1", "F2", "G3")) ) );
 
 
 		};
