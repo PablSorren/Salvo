@@ -22,7 +22,7 @@ public class Player {
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
 
-    private String userName;
+    private String email;
 
 
     public Player() {
@@ -31,20 +31,20 @@ public class Player {
 
     public Player(String email) {
 
-        this.userName = email;
+        this.email = email;
     }
 
-    public void setUserName(String email) {
+    public void setEmail(String email) {
 
-        this.userName = email;
+        this.email = email;
     }
 
     public long getUserId() {
         return id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return email;
     }
 
 
@@ -64,7 +64,7 @@ public class Player {
 
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", id);
-        dto.put("email" , userName);
+        dto.put("email" , email);
         return dto;
     }
 

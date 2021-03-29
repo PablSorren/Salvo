@@ -18,7 +18,7 @@ public class SalvoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(PlayerRepository players, GameRepository games, GamePlayerRepository gamePlayer, ShipRepository ships) {
+	public CommandLineRunner initData(PlayerRepository players, GameRepository games, GamePlayerRepository gamePlayer, ShipRepository ships, SalvoRepository salvo) {
 		return (args) -> {
 
 
@@ -82,10 +82,21 @@ public class SalvoApplication {
 			Ship s12 = ships.save(new Ship(ShipType.Submarine,new ArrayList<String>(Arrays.asList("A2", "A3", "A4")), gp6));
 			Ship s13 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("G6", "H6")), gp6));
 
+			//SALVOES
+
+			salvo.save(new Salvo(gp1, 1, new ArrayList<>(Arrays.asList("B5", "C5", "F1")) ) );
+			/*salvo.save(new Salvo(gp1, 2, new ArrayList<>(Arrays.asList("F2", "D5")) ) );
+
+			salvo.save(new Salvo(gp2, 1, new ArrayList<>(Arrays.asList("B4", "B5", "B6")) ) );
+			salvo.save(new Salvo(gp2, 2, new ArrayList<>(Arrays.asList("E1","H3", "A2")) ) );
 
 
+			salvo.save(new Salvo(gp3, 1, new ArrayList<>(Arrays.asList("B5", "D5", "C7")) ) );
+			salvo.save(new Salvo(gp3, 2, new ArrayList<>(Arrays.asList("C5", "C6")) ) );
 
-
+			salvo.save(new Salvo(gp4, 1, new ArrayList<>(Arrays.asList("A2", "A4", "G6")) ) );
+			salvo.save(new Salvo(gp4, 2, new ArrayList<>(Arrays.asList("A3", "H6")) ) );
+*/
 
 		};
 	}

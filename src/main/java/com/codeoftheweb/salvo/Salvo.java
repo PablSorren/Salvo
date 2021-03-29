@@ -24,7 +24,7 @@ public class Salvo {
 
     public Salvo(){}
 
-    public Salvo(GamePlayer gamePlayer, List<String> locations, int turn){
+    public Salvo(GamePlayer gamePlayer, int turn,  List<String> locations){
         this.gamePlayer = gamePlayer;
         gamePlayer.addSalvo(this);
         this.locations = locations;
@@ -47,9 +47,6 @@ public class Salvo {
         return gamePlayer;
     }
 
-    public String getUser(){
-        return gamePlayer.getUserName();
-    }
 
     public Map<String, Object> toDto(){
         Map<String, Object> dto = new LinkedHashMap<>();

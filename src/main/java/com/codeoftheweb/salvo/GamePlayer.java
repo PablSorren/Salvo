@@ -70,7 +70,7 @@ public class GamePlayer {
     }
 
     public String getUserName(){
-        return player.getUserName();
+        return player.getEmail();
     }
 
     public Long getId(){
