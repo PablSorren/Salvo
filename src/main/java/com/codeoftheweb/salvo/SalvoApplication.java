@@ -83,6 +83,10 @@ public class SalvoApplication {
 			Ship s13 = ships.save(new Ship(ShipType.Patrol_Boat,new ArrayList<String>(Arrays.asList("G6", "H6")), gp6));
 
 
+
+
+
+
 		};
 	}
 
