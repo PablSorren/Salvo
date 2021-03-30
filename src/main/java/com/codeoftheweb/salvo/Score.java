@@ -26,8 +26,40 @@ public class Score {
 
     private LocalDate finishDate;
 
+    public Score() {
+        finishDate = LocalDate.now();
+    }
 
 
+    public Score(Player player, Game game) {
+        this.player = player;
+        this.game = game;
+    }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+
+    public Game getGame() {
+        return game;
+    }
+
+
+    public double getScore() {
+        return score;
+    }
+
+    public LocalDate getFinishDate() {
+        return finishDate;
+    }
 
 }

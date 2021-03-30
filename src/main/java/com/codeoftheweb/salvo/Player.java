@@ -22,6 +22,11 @@ public class Player {
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
 
+
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+    Set<Score> scores;
+
     private String email;
 
 
@@ -54,12 +59,21 @@ public class Player {
         return gamePlayers.stream().map(g -> g.getGame()).collect(toList());
     }
 
+
     public Map<String, Object> toDTO(){
 
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", id);
         dto.put("email" , email);
         return dto;
+    }
+
+    public Set<Score> getScores() {
+        return scores;
+    }
+
+    public void addScores(Score score) {
+        scores.add(score);
     }
 
 
