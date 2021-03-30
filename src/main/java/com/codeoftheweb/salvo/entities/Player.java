@@ -1,9 +1,11 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import static java.util.stream.Collectors.toList;
 
 @Entity // Indica que JPA construya una tabla para esta clase
@@ -49,11 +51,6 @@ public class Player {
     }
 
 
-    public void addGamePlayer(GamePlayer gamePlayer) {
-
-        gamePlayers.add(gamePlayer);
-    }
-
     @JsonIgnore //evita recursividad
     public List<Game> getGames() {
         return gamePlayers.stream().map(g -> g.getGame()).collect(toList());
@@ -72,9 +69,8 @@ public class Player {
         return scores;
     }
 
-    public void addScore(Score score) {
-        scores.add(score);
+    public Score getScore(Game game){
+         return scores.stream().filter(score -> score.getGame().equals(game)).findFirst().orElse(null);
     }
-
 
 }

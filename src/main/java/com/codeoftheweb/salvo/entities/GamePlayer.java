@@ -1,4 +1,4 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -119,6 +119,10 @@ public class GamePlayer {
                                          .map(Salvo::toDto)
                                          .collect(Collectors.toList()));
         return gameViewMap;
+    }
+
+    public Score getScore(){
+        return player.getScore(game);
     }
 
 }

@@ -1,6 +1,5 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.entities;
 
-import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

@@ -1,14 +1,11 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Entity
 public class Game {
@@ -45,11 +42,6 @@ public class Game {
     }
 
 
-    public void addGamePlayer(GamePlayer gamePlayer){
-
-        gamePlayers.add(gamePlayer);
-    }
-
     public Set<GamePlayer> getGamePlayers() {
         return gamePlayers;
     }
@@ -80,6 +72,7 @@ public class Game {
         dto.put("id", id);
         dto.put("created", dateAndTimeOfCreation);
         dto.put("gamePlayers", getGamePlayerList());
+        dto.put("scores", scores.stream().map(Score::toDTO).collect(Collectors.toList()));
         return  dto;
     }
 
@@ -91,13 +84,6 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
-    public Set<Score> getScores(){
-        return scores;
-    }
-
-    public void addScore(Score score){
-        scores.add(score);
-    }
 
 
 }

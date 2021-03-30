@@ -1,6 +1,6 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.repositories;
 
-import org.hibernate.secure.spi.JaccPermissionDeclarations;
+import com.codeoftheweb.salvo.entities.Game;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 

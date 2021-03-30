@@ -1,10 +1,12 @@
-package com.codeoftheweb.salvo;
+package com.codeoftheweb.salvo.entities;
 
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Entity
 public class Score {
@@ -60,6 +62,14 @@ public class Score {
 
     public LocalDate getFinishDate() {
         return finishDate;
+    }
+
+    public Map<String, Object> toDTO(){
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("score", score);
+        dto.put("player",player.getUserId());
+        dto.put("finishDate", finishDate);
+        return dto;
     }
 
 }

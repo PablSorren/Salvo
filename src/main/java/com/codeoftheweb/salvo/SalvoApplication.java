@@ -1,11 +1,12 @@
 package com.codeoftheweb.salvo;
 
+import com.codeoftheweb.salvo.entities.*;
+import com.codeoftheweb.salvo.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
