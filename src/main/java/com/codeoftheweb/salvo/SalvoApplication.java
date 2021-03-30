@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -18,7 +19,7 @@ public class SalvoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(PlayerRepository players, GameRepository games, GamePlayerRepository gamePlayer, ShipRepository ships, SalvoRepository salvo) {
+	public CommandLineRunner initData(PlayerRepository players, GameRepository games, GamePlayerRepository gamePlayer, ShipRepository ships, SalvoRepository salvo, ScoreRepository score) {
 		return (args) -> {
 
 
@@ -100,6 +101,25 @@ public class SalvoApplication {
 			salvo.save(new Salvo(gp5, 2, new ArrayList<>(Arrays.asList("A2", "A3", "D8")) ) );
 			salvo.save(new Salvo(gp6, 1, new ArrayList<>(Arrays.asList("H1", "H2", "H3")) ) );
 			salvo.save(new Salvo(gp6, 2, new ArrayList<>(Arrays.asList("E1", "F2", "G3")) ) );
+
+			//SCORES
+			double win = 1;
+			double lose = 0;
+			double tie = 0.5;
+
+
+			score.save(new Score(jbauer, game1, win));
+			score.save(new Score(cobrian, game1, lose));
+
+			score.save(new Score(jbauer, game2, tie));
+			score.save(new Score(cobrian, game2, tie));
+
+			score.save(new Score(cobrian, game3, win));
+			score.save(new Score(talmeida, game3, lose));
+
+			score.save(new Score(cobrian, game4, tie));
+			score.save(new Score(jbauer, game4, tie));
+
 
 
 		};

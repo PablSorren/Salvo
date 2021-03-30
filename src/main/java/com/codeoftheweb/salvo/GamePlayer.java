@@ -53,10 +53,6 @@ public class GamePlayer {
     }
 
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     public void setGame(Game game) {
         this.game = game;
     }

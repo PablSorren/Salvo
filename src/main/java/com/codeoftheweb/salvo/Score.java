@@ -27,22 +27,22 @@ public class Score {
     private LocalDate finishDate;
 
     public Score() {
-        finishDate = LocalDate.now();
+
     }
 
 
-    public Score(Player player, Game game) {
+    public Score(Player player, Game game, double score) {
         this.player = player;
         this.game = game;
+        this.score = score;
+
+        finishDate = LocalDate.now();
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public Player getPlayer() {
         return player;

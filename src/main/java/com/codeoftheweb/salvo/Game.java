@@ -27,7 +27,8 @@ public class Game {
     private LocalDateTime dateAndTimeOfCreation;
 
     public Game() {
-
+        gamePlayers = new HashSet<>();
+        scores = new HashSet<>();
     }
 
     // instanciar con Game game1 = new Game(LocalDateTime.now());
