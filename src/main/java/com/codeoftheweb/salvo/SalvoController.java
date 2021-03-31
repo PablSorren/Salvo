@@ -69,6 +69,15 @@ public class SalvoController {
     }
 
 
+    @GetMapping("/leaderboard")
+    public List<Map<String,Object>> getLeaderBoard(){
+        return  playerRepository
+                .findAll()
+                .stream()
+                .map(Player::scoreToDTO)
+                .collect(Collectors.toList());
+    }
+
     private <K, V> Map<K, V> toMap(K key, V value) {
         Map<K, V> map = new LinkedHashMap<>();
         map.put(key, value);

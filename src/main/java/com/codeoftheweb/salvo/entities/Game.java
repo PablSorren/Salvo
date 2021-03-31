@@ -1,6 +1,7 @@
 package com.codeoftheweb.salvo.entities;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.validation.ObjectError;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -72,10 +73,14 @@ public class Game {
         dto.put("id", id);
         dto.put("created", dateAndTimeOfCreation);
         dto.put("gamePlayers", getGamePlayerList());
-        dto.put("scores", scores.stream().map(Score::toDTO).collect(Collectors.toList()));
+        dto.put("scores", getScoresList());
         return  dto;
     }
 
+
+    private List<Map<String, Object>> getScoresList() {
+        return scores.stream().map(Score::toDTO).collect(Collectors.toList());
+    }
 
     private List< Map<String, Object> > getGamePlayerList(){
         return   gamePlayers

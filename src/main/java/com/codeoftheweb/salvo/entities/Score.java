@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class Score {
 
     private double score;
 
-    private LocalDate finishDate;
+    private LocalDateTime finishDate;
 
     public Score() {
 
@@ -38,7 +39,7 @@ public class Score {
         this.game = game;
         this.score = score;
 
-        finishDate = LocalDate.now();
+        finishDate = LocalDateTime.now();
     }
 
     public long getId() {
@@ -60,7 +61,7 @@ public class Score {
         return score;
     }
 
-    public LocalDate getFinishDate() {
+    public LocalDateTime getFinishDate() {
         return finishDate;
     }
 

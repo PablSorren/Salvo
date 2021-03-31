@@ -119,7 +119,7 @@ public class SalvoApplication {
 			score.save(new Score(talmeida, game3, lose));
 
 			score.save(new Score(cobrian, game4, tie));
-			score.save(new Score(jbauer, game4, tie));
+			score.save(new Score(jbauer, game4, lose));
 
 
 

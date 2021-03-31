@@ -6,15 +6,14 @@ import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toList;
 
 @Entity // Indica que JPA construya una tabla para esta clase
 public class Player {
 
 
-    /*Indica que la variable id va a ser la primary key para la tabla,
-    NUNCA va a generar 2 ids iguales
-    y que TODAS las demas variables van a ser columnas de la tabla*/
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     // genera un nuevo valor de la variable id cada vez que se instancia a Player
@@ -73,4 +72,37 @@ public class Player {
          return scores.stream().filter(score -> score.getGame().equals(game)).findFirst().orElse(null);
     }
 
+    public double getTotalScore(){
+        return scores
+                .stream()
+                .mapToDouble(Score::getScore)
+                .sum();
+    }
+
+    public long getWinsCount(){
+        return getResult(1);
+    }
+
+    public long getLosesCount(){
+        return getResult(0);
+    }
+
+    public long getTiesCount(){
+        return getResult(0.5);
+    }
+
+
+    private long getResult(double s) {
+        return scores.stream().filter(score -> Double.compare(score.getScore(), s) == 0).count();
+    }
+
+    public Map<String, Object> scoreToDTO() {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("name", email);
+        dto.put("total", getTotalScore());
+        dto.put("won", getWinsCount());
+        dto.put("lost", getLosesCount());
+        dto.put("tied", getTiesCount());
+        return dto;
+    }
 }

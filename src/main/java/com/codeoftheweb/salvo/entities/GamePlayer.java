@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -113,16 +112,23 @@ public class GamePlayer {
 
         Map<String, Object> gameViewMap = game.toDTO();
         gameViewMap.put("ships", ships.stream().map(Ship::toDTO));
-        gameViewMap.put("salvoes",game.getGamePlayers()
-                                         .stream()
-                                         .flatMap(gp -> gp.getSalvoes().stream())
-                                         .map(Salvo::toDto)
-                                         .collect(Collectors.toList()));
+        gameViewMap.put("salvoes",getSalvoesList());
         return gameViewMap;
     }
+
+
+    private List<Map<String,Object>> getSalvoesList(){
+        return game.getGamePlayers()
+                .stream()
+                .flatMap(gp -> gp.getSalvoes().stream())
+                .map(Salvo::toDto)
+                .collect(Collectors.toList());
+    }
+
 
     public Score getScore(){
         return player.getScore(game);
     }
+
 
 }
