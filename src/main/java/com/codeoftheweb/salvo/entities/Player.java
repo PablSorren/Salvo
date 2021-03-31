@@ -75,6 +75,7 @@ public class Player {
     public double getTotalScore(){
         return scores
                 .stream()
+                .filter(s -> Double.compare(s.getScore(),-1) !=0)
                 .mapToDouble(Score::getScore)
                 .sum();
     }

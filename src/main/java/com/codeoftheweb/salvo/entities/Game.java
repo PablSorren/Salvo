@@ -29,7 +29,6 @@ public class Game {
         scores = new HashSet<>();
     }
 
-    // instanciar con Game game1 = new Game(LocalDateTime.now());
     public Game(LocalDateTime time) {
         this.dateAndTimeOfCreation = time;
     }
