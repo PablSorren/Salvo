@@ -60,23 +60,19 @@ public class SalvoController {
     }
 
     @GetMapping("/games")
-    public List<Map<String, Object>> getGames() {
-        return gameRepository
-                .findAll()
-                .stream()
-                .map(Game::toDTO)
-                .collect(Collectors.toList());
+    public Map<String, Object> getGames() {
+
+        Map<String, Object> dto = new HashMap<>();
+
+        dto.put("games",  gameRepository
+                            .findAll()
+                            .stream()
+                            .map(Game::toDTO)
+                            .collect(Collectors.toList()));
+                return dto;
     }
 
 
-    @GetMapping("/leaderboard")
-    public List<Map<String,Object>> getLeaderBoard(){
-        return  playerRepository
-                .findAll()
-                .stream()
-                .map(Player::scoreToDTO)
-                .collect(Collectors.toList());
-    }
 
     private <K, V> Map<K, V> toMap(K key, V value) {
         Map<K, V> map = new LinkedHashMap<>();
