@@ -28,6 +28,7 @@ public class Player {
     Set<Score> scores;
 
     private String email;
+    private String password;
 
 
     public Player() {
@@ -35,9 +36,10 @@ public class Player {
         scores = new HashSet<>();
     }
 
-    public Player(String email) {
+    public Player(String email, String password) {
 
         this.email = email;
+        this.password = password;
     }
 
 
@@ -49,6 +51,13 @@ public class Player {
         return email;
     }
 
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
 
     @JsonIgnore //evita recursividad
     public List<Game> getGames() {
