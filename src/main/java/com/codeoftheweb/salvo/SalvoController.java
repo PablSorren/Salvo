@@ -35,7 +35,7 @@ public class SalvoController {
     PasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/players")
+   @GetMapping("/players")
     public List<Map<String, Object>> getPlayers() {
 
         return playerRepository

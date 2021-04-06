@@ -52,7 +52,7 @@ function loadData() {
 }
 
 function login(){
-  $.post("/api/login", { name: $("#email").val(), pwd: $("#password").val()})
+  $.post("/api/login", { name: $("#username").val(), pwd: $("#password").val()})
     .done(function() {
         console.log("successful login!!")
         loadData(),
