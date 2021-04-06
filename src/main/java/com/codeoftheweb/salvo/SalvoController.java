@@ -35,6 +35,16 @@ public class SalvoController {
     PasswordEncoder passwordEncoder;
 
 
+    @GetMapping("/players")
+    public List<Map<String, Object>> getPlayers() {
+
+        return playerRepository
+                .findAll()
+                .stream()
+                .map(Player::toDTO)
+                .collect(Collectors.toList());
+    }
+
     @RequestMapping(path = "/players", method = RequestMethod.POST)
     public ResponseEntity<Object> register(@RequestParam String email, @RequestParam String password) {
 
