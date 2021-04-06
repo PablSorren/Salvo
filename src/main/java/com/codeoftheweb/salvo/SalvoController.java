@@ -93,6 +93,8 @@ public class SalvoController {
 
         if(loggedInPlayer != null) {
             dto.put("player", loggedInPlayer.toDTO());
+        } else {
+            dto.put("player", "Guest");
         }
 
         dto.put("games",  gameRepository
