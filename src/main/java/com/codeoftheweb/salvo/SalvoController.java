@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -102,6 +103,25 @@ public class SalvoController {
                             .collect(Collectors.toList()));
         return dto;
     }
+
+    @PostMapping("/games")
+    public ResponseEntity<Map<String, Object>> createGame(Authentication authentication) {
+
+       ResponseEntity<Map<String, Object>> response;
+
+       if(isNotLogged(authentication)) {
+           response = new ResponseEntity<>(toMap("player", "guest"), HttpStatus.UNAUTHORIZED);
+
+       } else {
+          Game newGame = gameRepository.save(new Game(LocalDateTime.now()));
+          Player currentPlayer = playerRepository.findByEmail(authentication.getName());
+          GamePlayer gp = gamePlayerRepository.save(new GamePlayer(currentPlayer, newGame));
+          response = new ResponseEntity<>(toMap("gpid", gp.getId()), HttpStatus.CREATED);
+
+       }
+    return response;
+    }
+
 
     private boolean isNotLogged(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
