@@ -45,18 +45,18 @@ public class SalvoController {
                 .collect(Collectors.toList());
     }
 
-    @RequestMapping(path = "/players", method = RequestMethod.POST)
+    @PostMapping("/players")
     public ResponseEntity<Object> register(@RequestParam String email, @RequestParam String password) {
 
         if(email.isEmpty()) {
-            return new ResponseEntity<>("Email not specified", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(toMap("error","Email not specified"), HttpStatus.FORBIDDEN);
         }
         if(password.isEmpty()){
-            return new ResponseEntity<>("Must specify a password", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(toMap("error","Must specify a password"), HttpStatus.FORBIDDEN);
         }
 
         if(playerRepository.findByEmail(email) != null){
-            return new ResponseEntity<>("Email already taken", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(toMap("error","Email already taken"), HttpStatus.FORBIDDEN);
         }
 
         playerRepository.save(new Player(email, passwordEncoder.encode(password)));

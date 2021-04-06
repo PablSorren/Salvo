@@ -22,7 +22,7 @@ $('#login-form').on('submit', function (event) {
             .done(function() {
                 console.log("login ok");
                 $('#loginSuccess').show( "slow" ).delay(2000).hide( "slow" );
-                // $("#username").val("");
+                $("#username").val("");
                 $("#password").val("");
                 updateJson();
 
