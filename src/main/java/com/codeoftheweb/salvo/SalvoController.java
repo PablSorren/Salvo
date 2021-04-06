@@ -8,14 +8,15 @@ import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
 import com.codeoftheweb.salvo.repositories.GameRepository;
 import com.codeoftheweb.salvo.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 import java.util.stream.Collectors;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @RequestMapping("/api")
@@ -30,14 +31,29 @@ public class SalvoController {
     @Autowired
     GamePlayerRepository gamePlayerRepository;
 
-    @GetMapping("/players")
-    public List<Map<String, Object>> getPlayers() {
-        return playerRepository
-                .findAll()
-                .stream()
-                .map(Player::toDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+
+    @RequestMapping(path = "/players", method = RequestMethod.POST)
+    public ResponseEntity<Object> register(@RequestParam String email, @RequestParam String password) {
+
+        if(email.isEmpty()) {
+            return new ResponseEntity<>("Email not specified", HttpStatus.FORBIDDEN);
+        }
+        if(password.isEmpty()){
+            return new ResponseEntity<>("Must specify a password", HttpStatus.FORBIDDEN);
+        }
+
+        if(playerRepository.findByEmail(email) != null){
+            return new ResponseEntity<>("Email already taken", HttpStatus.FORBIDDEN);
+        }
+
+        playerRepository.save(new Player(email, passwordEncoder.encode(password)));
+
+        return new ResponseEntity<>(toMap("email", email), HttpStatus.CREATED);
     }
+
 
     @GetMapping("/game_view/{gamePlayerId}")
     public ResponseEntity<Map<String, Object>> gamePlayer(@PathVariable long gamePlayerId) {
@@ -59,18 +75,32 @@ public class SalvoController {
     }
 
     @GetMapping("/games")
-    public Map<String, Object> getGames() {
+    public Map<String, Object> getGames(Authentication authentication) {
 
-        Map<String, Object> dto = new HashMap<>();
+        Map<String, Object> dto = new LinkedHashMap<>();
+
+        Player loggedInPlayer = getLoggedInPlayer(authentication);
+
+        if(loggedInPlayer != null) {
+            dto.put("player", loggedInPlayer.toDTO());
+        }
 
         dto.put("games",  gameRepository
                             .findAll()
                             .stream()
                             .map(Game::toDTO)
                             .collect(Collectors.toList()));
-                return dto;
+        return dto;
     }
 
+    private Player getLoggedInPlayer(Authentication authentication) {
+
+        if(authentication == null) {
+            return null;
+        } else {
+            return playerRepository.findByEmail(authentication.getName());
+        }
+    }
 
 
     private <K, V> Map<K, V> toMap(K key, V value) {

@@ -11,5 +11,5 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 
-    Optional<Player> findByEmail(@Param("email") String email);
+    Player findByEmail(@Param("email") String email);
 }
