@@ -8,9 +8,9 @@ import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
 import com.codeoftheweb.salvo.repositories.GameRepository;
 import com.codeoftheweb.salvo.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,12 +89,10 @@ public class SalvoController {
 
         Map<String, Object> dto = new LinkedHashMap<>();
 
-        Player loggedInPlayer = getLoggedInPlayer(authentication);
-
-        if(loggedInPlayer != null) {
-            dto.put("player", loggedInPlayer.toDTO());
-        } else {
+        if(isNotLogged(authentication)) {
             dto.put("player", "Guest");
+        } else {
+            dto.put("player", playerRepository.findByEmail(authentication.getName()).toDTO());
         }
 
         dto.put("games",  gameRepository
@@ -105,13 +103,8 @@ public class SalvoController {
         return dto;
     }
 
-    private Player getLoggedInPlayer(Authentication authentication) {
-
-        if(authentication == null) {
-            return null;
-        } else {
-            return playerRepository.findByEmail(authentication.getName());
-        }
+    private boolean isNotLogged(Authentication authentication) {
+        return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
 
 
