@@ -26,5 +26,9 @@ public class Util {
         return new ResponseEntity<>(toMap("WARNING", "Guests are not authorized here"), HttpStatus.UNAUTHORIZED);
     }
 
+    public static ResponseEntity<Map<String, Object>> deniedGameView() {
+        return new ResponseEntity<>(Util.toMap("ERROR", "PERMISSION DENIED - NOT YOUR GAME")
+                , HttpStatus.UNAUTHORIZED);
+    }
 
 }

@@ -1,20 +1,18 @@
 package com.codeoftheweb.salvo.controllers;
 
 import com.codeoftheweb.salvo.Util;
-import com.codeoftheweb.salvo.entities.Game;
 import com.codeoftheweb.salvo.entities.GamePlayer;
 import com.codeoftheweb.salvo.entities.Player;
+import com.codeoftheweb.salvo.entities.Ship;
 import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
-import com.codeoftheweb.salvo.repositories.GameRepository;
 import com.codeoftheweb.salvo.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,9 +20,6 @@ import java.util.stream.Collectors;
 public class SalvoController {
 
     //-----------------------------------------------Autowired Classes--------------------------------------------------------
-
-    @Autowired
-    GameRepository gameRepository;
 
     @Autowired
     PlayerRepository playerRepository;
@@ -51,8 +46,7 @@ public class SalvoController {
 
         } else if( currentPlayer.getUserId() != gp.get().getPlayerId()) {
 
-            response = new ResponseEntity<>(Util.toMap("ERROR", "PERMISSION DENIED - NOT YOUR GAME")
-                                           , HttpStatus.UNAUTHORIZED);
+            response = Util.deniedGameView();
        } else {
 
             response = new ResponseEntity<>(gp.get().gameView(), HttpStatus.OK);
@@ -61,6 +55,37 @@ public class SalvoController {
         return response;
     }
 
+//------------------------------------Ships Placement----------------------------------------------------
+
+    @RequestMapping(value="/games/players/{gamePlayerId}/ships", method=RequestMethod.POST)
+    public ResponseEntity<Map<String,Object>> addShips(@PathVariable long gamePlayerId, @RequestBody Set<Ship> ships, Authentication authentication) {
+
+        ResponseEntity<Map<String,Object>> response;
+        Optional<GamePlayer> gp = gamePlayerRepository.findById(gamePlayerId);
+        Player currentPlayer = playerRepository.findByEmail(authentication.getName());
+
+        if(gp.isEmpty()) {
+            response = new ResponseEntity<>(Util.toMap("ERROR", String.format("Game player id %d does not exists", gamePlayerId))
+                                            , HttpStatus.UNAUTHORIZED);
+
+        } else if(Util.isNotLogged(authentication)) {
+            response = Util.guestUnauthorizedWarning();
+
+        } else if( currentPlayer.getUserId() != gp.get().getPlayerId()) {
+            response = Util.deniedGameView();
+
+        } else if(gp.get().shipsPlaced()){
+            response = new ResponseEntity<>(Util.toMap("DENIED", "SHIPS ALREADY PLACED")
+                    , HttpStatus.FORBIDDEN);
+        } else {
+
+            gp.get().addShips(ships);
+            gamePlayerRepository.save(gp.get());
+            response = new ResponseEntity<>(Util.toMap("OK", "SHIPS PLACED"),HttpStatus.CREATED);
+        }
+
+        return response;
+    }
 
 
 }

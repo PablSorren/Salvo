@@ -37,6 +37,8 @@ public class GamePlayer {
 
     private LocalDateTime playerJoinDate;
 
+
+
     public GamePlayer(){
 
         playerJoinDate = LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
@@ -89,6 +91,13 @@ public class GamePlayer {
         ships.add(ship);
     }
 
+    public void addShips(Set<Ship> ships){
+        this.ships = ships;
+    }
+
+    public boolean shipsPlaced() {
+        return ships.size() == game.maxShipsAllowed;
+    }
 
     public Set<Salvo> getSalvoes() {
         return salvoes;
