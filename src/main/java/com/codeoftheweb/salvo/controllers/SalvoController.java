@@ -61,26 +61,6 @@ public class SalvoController {
         return response;
     }
 
-    //-----------------------------------------------List of Games--------------------------------------------------------
-
-    @GetMapping("/games")
-    public Map<String, Object> getGames(Authentication authentication) {
-
-        Map<String, Object> dto = new LinkedHashMap<>();
-
-        if(Util.isNotLogged(authentication)) {
-            dto.put("player", "Guest");
-        } else {
-            dto.put("player", playerRepository.findByEmail(authentication.getName()).toDTO());
-        }
-
-        dto.put("games",  gameRepository
-                            .findAll()
-                            .stream()
-                            .map(Game::toDTO)
-                            .collect(Collectors.toList()));
-        return dto;
-    }
 
 
 }

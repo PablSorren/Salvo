@@ -11,14 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -87,6 +86,27 @@ public class GameController {
         return response;
     }
 
+
+    //-----------------------------------------------List of Games--------------------------------------------------------
+
+    @GetMapping("/games")
+    public Map<String, Object> getGames(Authentication authentication) {
+
+        Map<String, Object> dto = new LinkedHashMap<>();
+
+        if(Util.isNotLogged(authentication)) {
+            dto.put("player", "Guest");
+        } else {
+            dto.put("player", playerRepository.findByEmail(authentication.getName()).toDTO());
+        }
+
+        dto.put("games",  gameRepository
+                .findAll()
+                .stream()
+                .map(Game::toDTO)
+                .collect(Collectors.toList()));
+        return dto;
+    }
 
 
 
