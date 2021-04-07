@@ -88,6 +88,9 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
+    public boolean isFull(){
+        return gamePlayers.size() == 2;
+    }
 
 
 }
