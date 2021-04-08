@@ -95,7 +95,8 @@ public class GameController {
         Map<String, Object> dto = new LinkedHashMap<>();
 
         if(Util.isNotLogged(authentication)) {
-            dto.put("player", "Guest");
+            dto.put("player", "Guest not allowed");
+
         } else {
             dto.put("player", playerRepository.findByEmail(authentication.getName()).toDTO());
         }

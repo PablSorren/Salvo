@@ -28,10 +28,12 @@ public class GamePlayer {
     @JoinColumn(name = "game_id")
     private Game game;
 
-    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Ship> ships;
 
-    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+
+    //cascade = CascadeType.ALL automatizael relacionar padre-hijo, sin esto, tendria un hijo (salvoes) sin el padre(gameplayer)
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Salvo> salvoes;
 
 
@@ -87,16 +89,25 @@ public class GamePlayer {
         return ships;
     }
 
-    public void addShip(Ship ship) {
+
+
+    public void addShips(Set<Ship> ships){
+
+        ships.forEach(ship -> {
+            ship.setGamePlayer(this);
+            this.ships.add(ship);
+        });
+
+    }
+
+
+    public void addShip(Ship ship){
         ships.add(ship);
     }
 
-    public void addShips(Set<Ship> ships){
-        this.ships = ships;
-    }
 
     public boolean shipsPlaced() {
-        return ships.size() == game.maxShipsAllowed;
+        return ships.size() >= game.maxShipsAllowed;
     }
 
     public Set<Salvo> getSalvoes() {
