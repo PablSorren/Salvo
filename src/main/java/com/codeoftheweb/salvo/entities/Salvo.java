@@ -48,7 +48,7 @@ public class Salvo {
     }
 
 
-    public Map<String, Object> toDto(){
+    public Map<String, Object> toDTO(){
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("turn", turn);
         dto.put("player", gamePlayer.getPlayerId());

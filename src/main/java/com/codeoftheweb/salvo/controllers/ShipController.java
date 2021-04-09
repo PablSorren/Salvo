@@ -42,10 +42,10 @@ public class ShipController {
 
         ResponseEntity<Map<String,Object>> response;
         Optional<GamePlayer> gp = gamePlayerRepository.findById(gamePlayerId);
-        Player currentPlayer = playerRepository.findByEmail(authentication.getName());
+        Player currentPlayer = playerRepository.findByUsername(authentication.getName());
 
         if(gp.isEmpty()) {
-            response = new ResponseEntity<>(Util.toMap("ERROR", String.format("Game player id %d does not exists", gamePlayerId))
+            response = new ResponseEntity<>(Util.toMap("error", String.format("Game player id %d does not exists", gamePlayerId))
                     , HttpStatus.UNAUTHORIZED);
 
         } else if(Util.isNotLogged(authentication)) {
@@ -55,7 +55,7 @@ public class ShipController {
             response = Util.deniedGameView();
 
         } else if(gp.get().shipsPlaced()){
-            response = new ResponseEntity<>(Util.toMap("DENIED", "SHIPS ALREADY PLACED")
+            response = new ResponseEntity<>(Util.toMap("error", "SHIPS ALREADY PLACED")
                     , HttpStatus.FORBIDDEN);
         } else {
 
@@ -69,7 +69,7 @@ public class ShipController {
             });
 
             gamePlayerRepository.save(gp.get());
-            response = new ResponseEntity<>(Util.toMap("SUCCESS","SHIPS PLACED" ),HttpStatus.CREATED);
+            response = new ResponseEntity<>(Util.toMap("OK","Ship created"),HttpStatus.CREATED);
 
         }
 

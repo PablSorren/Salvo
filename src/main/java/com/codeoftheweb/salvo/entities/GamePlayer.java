@@ -69,7 +69,7 @@ public class GamePlayer {
     }
 
     public String getUserName(){
-        return player.getEmail();
+        return player.getUsername();
     }
 
     public Long getId(){
@@ -107,7 +107,7 @@ public class GamePlayer {
 
 
     public boolean shipsPlaced() {
-        return ships.size() >= game.maxShipsAllowed;
+        return ships.size() != 0;
     }
 
     public Set<Salvo> getSalvoes() {
@@ -124,7 +124,7 @@ public class GamePlayer {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", id);
         dto.put("player" ,player.toDTO());
-        dto.put("joinDate", playerJoinDate);
+       // dto.put("joinDate", playerJoinDate);
         return dto;
     }
 
@@ -141,7 +141,7 @@ public class GamePlayer {
         return game.getGamePlayers()
                 .stream()
                 .flatMap(gp -> gp.getSalvoes().stream())
-                .map(Salvo::toDto)
+                .map(Salvo::toDTO)
                 .collect(Collectors.toList());
     }
 

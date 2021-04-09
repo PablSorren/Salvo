@@ -46,7 +46,7 @@ public class GameController {
 
         } else {
             Game newGame = gameRepository.save(new Game(LocalDateTime.now()));
-            Player currentPlayer = playerRepository.findByEmail(authentication.getName());
+            Player currentPlayer = playerRepository.findByUsername(authentication.getName());
             GamePlayer gp = gamePlayerRepository.save(new GamePlayer(currentPlayer, newGame));
             response = new ResponseEntity<>(Util.toMap("gpid", gp.getId()), HttpStatus.CREATED);
 
@@ -65,22 +65,22 @@ public class GameController {
         Optional<Game> game = gameRepository.findById(gameId);
 
         if(game.isEmpty()) {
-            response = new ResponseEntity<>(Util.toMap("Error", "Game not found"), HttpStatus.FORBIDDEN);
+            response = new ResponseEntity<>(Util.toMap("error", "Game not found"), HttpStatus.FORBIDDEN);
+
 
         } else if(Util.isNotLogged(authentication)) {
             response = Util.guestUnauthorizedWarning();
 
-        }  else {
+        } else if(game.get().isFull()) {
+            response = new ResponseEntity<>(Util.toMap("error", "GAME is full"), HttpStatus.FORBIDDEN);
 
-            Player currentPlayer = playerRepository.findByEmail(authentication.getName());
+        } else {
+
+            Player currentPlayer = playerRepository.findByUsername(authentication.getName());
             GamePlayer gp = gamePlayerRepository.save(new GamePlayer(currentPlayer, game.get()));
 
-            if (game.get().isFull() && currentPlayer.getUserId() != gp.getPlayerId()) {
-                response = new ResponseEntity<>(Util.toMap("ERROR", "GAME is full"), HttpStatus.FORBIDDEN);
+            response = new ResponseEntity<>(Util.toMap("gpid", gp.getId()), HttpStatus.CREATED);
 
-            } else {
-                response = new ResponseEntity<>(Util.toMap("gpid", gp.getId()), HttpStatus.CREATED);
-            }
         }
 
         return response;
@@ -95,10 +95,10 @@ public class GameController {
         Map<String, Object> dto = new LinkedHashMap<>();
 
         if(Util.isNotLogged(authentication)) {
-            dto.put("player", "Guest not allowed");
+            dto.put("player", "Guest");
 
         } else {
-            dto.put("player", playerRepository.findByEmail(authentication.getName()).toDTO());
+            dto.put("player", playerRepository.findByUsername(authentication.getName()).toDTO());
         }
 
         dto.put("games",  gameRepository

@@ -46,7 +46,7 @@ public class PlayerController {
             return new ResponseEntity<>(Util.toMap("error","Must specify a password"), HttpStatus.FORBIDDEN);
         }
 
-        if(playerRepository.findByEmail(email) != null){
+        if(playerRepository.findByUsername(email) != null){
             return new ResponseEntity<>(Util.toMap("error","Email already taken"), HttpStatus.FORBIDDEN);
         }
 

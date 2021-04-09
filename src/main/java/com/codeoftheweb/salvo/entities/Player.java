@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toList;
 
 @Entity // Indica que JPA construya una tabla para esta clase
@@ -27,7 +25,7 @@ public class Player {
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
     Set<Score> scores;
 
-    private String email;
+    private String username;
     private String password;
 
 
@@ -36,9 +34,9 @@ public class Player {
         scores = new HashSet<>();
     }
 
-    public Player(String email, String password) {
+    public Player(String username, String password) {
 
-        this.email = email;
+        this.username = username;
         this.password = password;
     }
 
@@ -47,8 +45,8 @@ public class Player {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword(){
@@ -69,7 +67,7 @@ public class Player {
 
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id", id);
-        dto.put("email" , email);
+        dto.put("email" , username);
         return dto;
     }
 
@@ -108,7 +106,7 @@ public class Player {
 
     public Map<String, Object> scoreToDTO() {
         Map<String, Object> dto = new LinkedHashMap<>();
-        dto.put("name", email);
+        dto.put("name", username);
         dto.put("total", getTotalScore());
         dto.put("won", getWinsCount());
         dto.put("lost", getLosesCount());

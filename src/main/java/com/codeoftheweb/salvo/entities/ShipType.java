@@ -5,24 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public enum ShipType {
 
     @JsonProperty("carrier")
-    CARRIER(5),
+    CARRIER,
     @JsonProperty("battleship")
-    BATTLESHIP(4),
+    BATTLESHIP,
     @JsonProperty("submarine")
-    SUBMARINE(3),
+    SUBMARINE,
     @JsonProperty("destroyer")
-    DESTROYER(3),
+    DESTROYER,
     @JsonProperty("patrolboat")
-    PATROL_BOAT(2) ;
+    PATROL_BOAT
 
-    int celdas;
-
-    ShipType(int length) {
-        this.celdas = length;
-    }
-
-    int getLength(){
-        return celdas;
-    }
 }
 

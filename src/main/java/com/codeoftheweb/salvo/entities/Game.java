@@ -24,7 +24,7 @@ public class Game {
 
     private LocalDateTime dateAndTimeOfCreation;
 
-    public static final int maxShipsAllowed = 5;
+
 
     public Game() {
         gamePlayers = new HashSet<>();

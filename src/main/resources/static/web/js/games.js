@@ -17,14 +17,15 @@ $('#login-form').on('submit', function (event) {
 
     if (submitButton == "login") {
         $.post("/api/login",
-            { email: $("#username").val(),
-                password: $("#password").val() })
+            { name: $("#username").val(),
+                pwd: $("#password").val() })
             .done(function() {
                 console.log("login ok");
                 $('#loginSuccess').show( "slow" ).delay(2000).hide( "slow" );
-                $("#username").val("");
+                // $("#username").val("");
                 $("#password").val("");
                 updateJson();
+                $("#createGameForm").show();
 
             })
             .fail(function() {
@@ -48,8 +49,8 @@ $('#login-form').on('submit', function (event) {
                 console.log(data);
                 $('#signupSuccess').show( "slow" ).delay(2000).hide( "slow" );
                 $.post("/api/login",
-                    { email: $("#username").val(),
-                        password: $("#password").val() })
+                    { name: $("#username").val(),
+                        pwd: $("#password").val() })
                     .done(function() {
                         console.log("login ok");
                         $('#loginSuccess').show( "slow" ).delay(2500).hide( "slow" );
@@ -83,7 +84,6 @@ $('#login-form').on('submit', function (event) {
 
             });
 
-
     } else {
         //no button pressed
     }
@@ -105,11 +105,12 @@ $('#logout-form').on('submit', function (event) {
             });
     });
 
-$('#createGame').on('submit', function (event) {
+
+$('#createGame').click(function (event) {
     event.preventDefault();
     $.post("/api/games")
         .done(function (data) {
-            console.log(data);
+            console.log("Miren mi juego ",data);
             console.log("game created");
             gameViewUrl = "/web/game.html?gp=" + data.gpid;
             $('#gameCreatedSuccess').show("slow").delay(2000).hide("slow");
@@ -125,9 +126,7 @@ $('#createGame').on('submit', function (event) {
             $('#errorSignup').show( "slow" ).delay(4000).hide( "slow" );
 
         })
-        .always(function () {
 
-        });
 });
 
 
@@ -162,8 +161,10 @@ function updateView() {
             $('#currentPlayer').text(data.player);
             $('#logout-form').hide("slow");
             $('#login-form').show("slow");
+            $("#createGameForm").hide();
 
         } else {
+
             $('#currentPlayer').text(data.player.email);
             $('#login-form').hide("slow");
             $('#logout-form').show("slow");
