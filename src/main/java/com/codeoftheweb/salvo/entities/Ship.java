@@ -48,11 +48,11 @@ public class Ship {
         return locations;
     }
 
-    public ShipType getShipType(){
+    public ShipType getType(){
         return type;
     }
 
-    public void setShipType(ShipType type) {
+    public void setType(ShipType type) {
         this.type = type;
     }
 

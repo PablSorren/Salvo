@@ -56,6 +56,7 @@ $('#login-form').on('submit', function (event) {
                         $('#loginSuccess').show( "slow" ).delay(2500).hide( "slow" );
                         $("#username").val("");
                         $("#password").val("");
+
                         updateJson();
 
                     })
@@ -164,7 +165,7 @@ function updateView() {
             $("#createGameForm").hide();
 
         } else {
-
+            $("#createGameForm").show();
             $('#currentPlayer').text(data.player.email);
             $('#login-form').hide("slow");
             $('#logout-form').show("slow");

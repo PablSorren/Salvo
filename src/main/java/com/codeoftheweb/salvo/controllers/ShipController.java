@@ -60,8 +60,6 @@ public class ShipController {
         } else {
 
 
-            //gp.get().addShips(ships);
-
             ships.stream().forEach(ship -> {
                 ship.setGamePlayer(gp.get());
                 shipRepository.save(ship);

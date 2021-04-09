@@ -91,15 +91,6 @@ public class GamePlayer {
 
 
 
-    public void addShips(Set<Ship> ships){
-
-        ships.forEach(ship -> {
-            ship.setGamePlayer(this);
-            this.ships.add(ship);
-        });
-
-    }
-
 
     public void addShip(Ship ship){
         ships.add(ship);
