@@ -179,7 +179,7 @@ public class GamePlayer {
             int carrierHits = 0, battleshipHits = 0, submarineHits = 0, destroyerHits = 0, patrolboatHits = 0;
             int missedShots = salvo.getLocations().size();
 
-            Map<String, Object> damagesPerTurn = new HashMap<>();
+            Map<String, Object> damagesPerTurn = new LinkedHashMap<>();
 
             for(String location : salvo.getLocations()) {
 
