@@ -63,10 +63,11 @@ public class Ship {
     public Map<String, Object> toDTO(){
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("type", type);
-        dto.put("id", id);
+        //dto.put("id", id);
         dto.put("locations" , locations);
 
         return dto;
     }
 
 }
+

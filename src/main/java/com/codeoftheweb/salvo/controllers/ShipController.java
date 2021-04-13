@@ -13,8 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -51,7 +49,7 @@ public class ShipController {
         } else if(Util.isNotLogged(authentication)) {
             response = Util.guestUnauthorizedWarning();
 
-        } else if( currentPlayer.getUserId() != gp.get().getPlayerId()) {
+        } else if( currentPlayer.getId() != gp.get().getPlayerId()) {
             response = Util.deniedGameView();
 
         } else if(gp.get().shipsPlaced()){

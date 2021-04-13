@@ -47,6 +47,18 @@ public class Salvo {
         return gamePlayer;
     }
 
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public void setGamePlayer(GamePlayer gamePlayer){
+        this.gamePlayer = gamePlayer;
+    }
+
+    public void setLocations(List<String> locations) {
+        this.locations = locations;
+    }
+
 
     public Map<String, Object> toDTO(){
         Map<String, Object> dto = new LinkedHashMap<>();

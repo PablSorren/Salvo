@@ -7,6 +7,7 @@ import com.codeoftheweb.salvo.entities.Salvo;
 import com.codeoftheweb.salvo.entities.Ship;
 import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
 import com.codeoftheweb.salvo.repositories.PlayerRepository;
+import com.codeoftheweb.salvo.repositories.SalvoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,8 @@ public class SalvoController {
     @Autowired
     GamePlayerRepository gamePlayerRepository;
 
+    @Autowired
+    SalvoRepository salvoRepository;
 
 //------------------------------------Game view of a game by a URL-path-variable-gameplayer's id----------------------------------------
     @GetMapping("/game_view/{gamePlayerId}")
@@ -46,7 +49,7 @@ public class SalvoController {
         } else if(Util.isNotLogged(authentication)) {
             response = Util.guestUnauthorizedWarning();
 
-        } else if( currentPlayer.getUserId() != gp.get().getPlayerId()) {
+        } else if( currentPlayer.getId() != gp.get().getPlayerId()) {
 
             response = Util.deniedGameView();
        } else {
@@ -55,8 +58,6 @@ public class SalvoController {
 
             Map<String, Object> dto = new LinkedHashMap<>();
             Map<String, Object> hits = new LinkedHashMap<>();
-            hits.put("self", new ArrayList<>());
-            hits.put("opponent", new ArrayList<>());
 
             dto.put("id", gp.get().getGame().getGameId());
             dto.put("created", gp.get().getGame().getDateAndTimeOfCreation());
@@ -68,17 +69,20 @@ public class SalvoController {
                                         .collect(Collectors.toList()));
 
             dto.put("ships", gp.get().getShips()
-                    .stream()
-                    .map(Ship::toDTO)
-                    .collect(Collectors.toList()));
+                               .stream()
+                               .map(Ship::toDTO)
+                               .collect(Collectors.toList()));
 
             dto.put("salvoes", gp.get().getGame().getGamePlayers()
-                    .stream()
-                    .flatMap(gamePlayer1 -> gamePlayer1.getSalvoes()
-                            .stream()
-                            .map(Salvo::toDTO))
-                    .collect(Collectors.toList()));
+                                 .stream()
+                                 .flatMap(gamePlayer1 -> gamePlayer1.getSalvoes()
+                                 .stream()
+                                 .map(Salvo::toDTO))
+                                 .collect(Collectors.toList()));
 
+
+            hits.put("self", gp.get().listOfHitsAndMisses());
+            hits.put("opponent",  gp.get().getOpponent().listOfHitsAndMisses());
             dto.put("hits", hits);
 
 
@@ -86,6 +90,69 @@ public class SalvoController {
 
         }
 
+
+        return response;
+    }
+
+
+
+
+//------------------------------------Salvos Placement----------------------------------------------------
+
+    @RequestMapping(value="/games/players/{gamePlayerId}/salvoes", method= RequestMethod.POST)
+    public ResponseEntity<Map<String,Object>> addSalvos(@PathVariable long gamePlayerId,
+                                                        @RequestBody Salvo salvo,
+                                                        Authentication authentication) {
+
+        ResponseEntity<Map<String,Object>> response;
+        Optional<GamePlayer> gp = gamePlayerRepository.findById(gamePlayerId);
+        Player currentPlayer = playerRepository.findByUsername(authentication.getName());
+
+        if(gp.isEmpty()) {
+            response = new ResponseEntity<>(Util.toMap("error", String.format("Game player id %d does not exists", gamePlayerId))
+                    , HttpStatus.UNAUTHORIZED);
+
+        } else if(Util.isNotLogged(authentication)) {
+            response = Util.guestUnauthorizedWarning();
+
+        } else if( currentPlayer.getId() != gp.get().getPlayerId()) {
+            response = Util.deniedGameView();
+
+        } else if( !gp.get().getGame().isFull()){
+
+            response = new ResponseEntity<>(Util.toMap("error", "you don't have an opponent yet")
+                    , HttpStatus.FORBIDDEN);
+
+        } else if(Util.opponentTurn(gp.get())){
+            response = new ResponseEntity<>(Util.toMap("error", "not your turn")
+                    , HttpStatus.FORBIDDEN);
+
+        } else {
+
+            int salvoTurn = gp.get().getSalvoes().size() + 1;
+
+            if (Util.repeatedTurn(gp.get(), salvoTurn)) {
+                response = new ResponseEntity<>(Util.toMap("error", "salvo already submited for this turn")
+                        , HttpStatus.FORBIDDEN);
+
+            } else if (salvo.getLocations().size() != 5) {
+                response = new ResponseEntity<>(Util.toMap("error", "5 salvoes must to be shoot")
+                        , HttpStatus.FORBIDDEN);
+
+            } else {
+                salvo.setTurn(salvoTurn);
+
+                salvoRepository.save(salvo);
+                salvo.setGamePlayer(gp.get());
+
+                gp.get().addSalvo(salvo);
+                gamePlayerRepository.save(gp.get());
+
+                response = new ResponseEntity<>(Util.toMap("OK", "salvo fired!!"), HttpStatus.CREATED);
+
+            }
+
+        }
 
         return response;
     }

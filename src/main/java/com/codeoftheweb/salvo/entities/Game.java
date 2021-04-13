@@ -49,7 +49,7 @@ public class Game {
     }
 
     public List<Player> getPlayers(){
-        return gamePlayers.stream().map(p->p.getPlayer()).collect(Collectors.toList());
+        return gamePlayers.stream().map(gp->gp.getPlayer()).collect(Collectors.toList());
     }
 
     public Set<Ship> getShips(){

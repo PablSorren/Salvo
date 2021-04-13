@@ -4,7 +4,6 @@ package com.codeoftheweb.salvo.entities;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -68,7 +67,7 @@ public class Score {
     public Map<String, Object> toDTO(){
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("score", score);
-        dto.put("player",player.getUserId());
+        dto.put("player",player.getId());
         dto.put("finishDate", finishDate);
         return dto;
     }
