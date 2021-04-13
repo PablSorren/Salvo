@@ -154,7 +154,8 @@ public class GamePlayer {
                 .stream()
                 .filter(gp -> gp.getId() != this.getId())
                 .findFirst()
-                .get();
+                .orElse(null)
+                ;
         return opponent;
     }
 
@@ -171,17 +172,17 @@ public class GamePlayer {
         List<String> destroyerLocations = shipLocations(ShipType.DESTROYER);
         List<String> patrolboatLocations = shipLocations(ShipType.PATROL_BOAT);
 
-        for(Salvo salvo : salvoes) {
+        for(Salvo salvo : this.getOpponent().getSalvoes()) {
 
             Map<String, Object> hitMapPerTurn = new LinkedHashMap<>();
             List<String> hitLocations = new ArrayList<>();
 
             int carrierHits = 0, battleshipHits = 0, submarineHits = 0, destroyerHits = 0, patrolboatHits = 0;
-            int missedShots = salvo.getLocations().size();
+            int missedShots = salvo.getSalvoLocations().size();
 
             Map<String, Object> damagesPerTurn = new LinkedHashMap<>();
 
-            for(String location : salvo.getLocations()) {
+            for(String location : salvo.getSalvoLocations()) {
 
                 if(carrierLocations.contains(location)) {
                     carrier++;
@@ -218,20 +219,21 @@ public class GamePlayer {
                     hitLocations.add(location);
                 }
 
-
-
-                damagesPerTurn.put("carrierHits", carrierHits);
-                damagesPerTurn.put("battleshipHits", battleshipHits);
-                damagesPerTurn.put("submarineHits", submarineHits);
-                damagesPerTurn.put("destroyerHits", destroyerHits);
-                damagesPerTurn.put("patrolboatHits", patrolboatHits);
-                damagesPerTurn.put("carrier", carrier);
-                damagesPerTurn.put("battleship", battleship);
-                damagesPerTurn.put("submarine", submarine);
-                damagesPerTurn.put("destroyer", destroyer);
-                damagesPerTurn.put("patrolboat", patrolboat);
-
             }
+
+
+
+            damagesPerTurn.put("carrierHits", carrierHits);
+            damagesPerTurn.put("battleshipHits", battleshipHits);
+            damagesPerTurn.put("submarineHits", submarineHits);
+            damagesPerTurn.put("destroyerHits", destroyerHits);
+            damagesPerTurn.put("patrolboatHits", patrolboatHits);
+            damagesPerTurn.put("carrier", carrier);
+            damagesPerTurn.put("battleship", battleship);
+            damagesPerTurn.put("submarine", submarine);
+            damagesPerTurn.put("destroyer", destroyer);
+            damagesPerTurn.put("patrolboat", patrolboat);
+
 
             hitMapPerTurn.put("turn", salvo.getTurn());
             hitMapPerTurn.put("hitLocations",hitLocations);
@@ -258,5 +260,33 @@ public class GamePlayer {
             return shipLocations.get().getLocations();
         }
     }
+
+
+
+    private Boolean getIfAllSunk (GamePlayer self, GamePlayer opponent) {
+
+        if(!opponent.getShips().isEmpty() && !self.getSalvoes().isEmpty()){
+
+            return opponent
+                    .getSalvoes()
+                    .stream()
+                    .flatMap(salvo -> salvo.getSalvoLocations().stream())
+                    .collect(Collectors.toList())
+                    .containsAll(self.getShips()
+                            .stream()
+                            .flatMap(ship -> ship.getLocations().stream())
+                            .collect(Collectors.toList()));
+        }
+        return false;
+    }
+
+
+   /* public String getGameStatus() {
+
+        String status;
+
+
+
+    }*/
 
 }

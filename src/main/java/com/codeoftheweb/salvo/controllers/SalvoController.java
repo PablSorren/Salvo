@@ -82,7 +82,16 @@ public class SalvoController {
 
 
             hits.put("self", gp.get().listOfHitsAndMisses());
-            hits.put("opponent",  gp.get().getOpponent().listOfHitsAndMisses());
+
+            GamePlayer opponent = gp.get().getOpponent();
+
+            if(opponent == null) { //evita el error que te tira al entrar a un game sin un oponente
+                hits.put("opponent",  new ArrayList<>());
+            } else {
+                hits.put("opponent",  opponent.listOfHitsAndMisses());
+            }
+
+
             dto.put("hits", hits);
 
 
@@ -135,7 +144,7 @@ public class SalvoController {
                 response = new ResponseEntity<>(Util.toMap("error", "salvo already submited for this turn")
                         , HttpStatus.FORBIDDEN);
 
-            } else if (salvo.getLocations().size() != 5) {
+            } else if (salvo.getSalvoLocations().size() != 5) {
                 response = new ResponseEntity<>(Util.toMap("error", "5 salvoes must to be shoot")
                         , HttpStatus.FORBIDDEN);
 

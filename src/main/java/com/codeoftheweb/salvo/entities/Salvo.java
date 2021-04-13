@@ -18,7 +18,7 @@ public class Salvo {
 
     @ElementCollection
     @Column(name = "salvo_locations")
-    private List<String> locations;
+    private List<String> salvoLocations;
 
     private int turn;
 
@@ -27,7 +27,7 @@ public class Salvo {
     public Salvo(GamePlayer gamePlayer, int turn,  List<String> locations){
         this.gamePlayer = gamePlayer;
         gamePlayer.addSalvo(this);
-        this.locations = locations;
+        this.salvoLocations = locations;
         this.turn = turn;
     }
 
@@ -35,8 +35,8 @@ public class Salvo {
         return id;
     }
 
-    public List<String> getLocations() {
-        return locations;
+    public List<String> getSalvoLocations() {
+        return salvoLocations;
     }
 
     public int getTurn(){
@@ -55,8 +55,8 @@ public class Salvo {
         this.gamePlayer = gamePlayer;
     }
 
-    public void setLocations(List<String> locations) {
-        this.locations = locations;
+    public void setSalvoLocations(List<String> salvoLocations) {
+        this.salvoLocations = salvoLocations;
     }
 
 
@@ -64,7 +64,7 @@ public class Salvo {
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("turn", turn);
         dto.put("player", gamePlayer.getPlayerId());
-        dto.put("locations" , locations);
+        dto.put("locations" , salvoLocations);
         return dto;
     }
 
