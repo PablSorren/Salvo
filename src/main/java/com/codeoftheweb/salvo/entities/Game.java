@@ -83,6 +83,10 @@ public class Game {
         return scores.stream().map(Score::toDTO).collect(Collectors.toList());
     }
 
+    public void addScore(Score score) {
+        scores.add(score);
+    }
+
     private List< Map<String, Object> > getGamePlayerList(){
         return   gamePlayers
                 .stream()

@@ -79,6 +79,10 @@ public class Player {
         return scores;
     }
 
+    public void addScore(Score score) {
+        scores.add(score);
+    }
+
     public Score getScore(Game game){
          return scores.stream().filter(score -> score.getGame().equals(game)).findFirst().orElse(null);
     }

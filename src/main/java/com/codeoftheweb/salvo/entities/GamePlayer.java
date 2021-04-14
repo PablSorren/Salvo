@@ -1,5 +1,6 @@
 package com.codeoftheweb.salvo.entities;
 
+import com.codeoftheweb.salvo.Util;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -221,8 +222,6 @@ public class GamePlayer {
 
             }
 
-
-
             damagesPerTurn.put("carrierHits", carrierHits);
             damagesPerTurn.put("battleshipHits", battleshipHits);
             damagesPerTurn.put("submarineHits", submarineHits);
@@ -263,30 +262,26 @@ public class GamePlayer {
 
 
 
-    private Boolean getIfAllSunk (GamePlayer self, GamePlayer opponent) {
+    public Boolean checkIfAllShipsSunk() {
 
-        if(!opponent.getShips().isEmpty() && !self.getSalvoes().isEmpty()){
+        GamePlayer opponent = getOpponent();
+
+        if(!ships.isEmpty() && !opponent.getSalvoes().isEmpty()){
 
             return opponent
                     .getSalvoes()
                     .stream()
                     .flatMap(salvo -> salvo.getSalvoLocations().stream())
                     .collect(Collectors.toList())
-                    .containsAll(self.getShips()
+                    .containsAll(ships
                             .stream()
                             .flatMap(ship -> ship.getLocations().stream())
-                            .collect(Collectors.toList()));
+                            .collect(Collectors.toList())
+                    );
         }
         return false;
     }
 
 
-   /* public String getGameStatus() {
-
-        String status;
-
-
-
-    }*/
 
 }

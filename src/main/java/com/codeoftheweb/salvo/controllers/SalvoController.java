@@ -1,13 +1,8 @@
 package com.codeoftheweb.salvo.controllers;
 
 import com.codeoftheweb.salvo.Util;
-import com.codeoftheweb.salvo.entities.GamePlayer;
-import com.codeoftheweb.salvo.entities.Player;
-import com.codeoftheweb.salvo.entities.Salvo;
-import com.codeoftheweb.salvo.entities.Ship;
-import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
-import com.codeoftheweb.salvo.repositories.PlayerRepository;
-import com.codeoftheweb.salvo.repositories.SalvoRepository;
+import com.codeoftheweb.salvo.entities.*;
+import com.codeoftheweb.salvo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +23,16 @@ public class SalvoController {
     PlayerRepository playerRepository;
 
     @Autowired
+    GameRepository gameRepository;
+
+    @Autowired
     GamePlayerRepository gamePlayerRepository;
 
     @Autowired
     SalvoRepository salvoRepository;
+
+    @Autowired
+    ScoreRepository scoreRepository;
 
 //------------------------------------Game view of a game by a URL-path-variable-gameplayer's id----------------------------------------
     @GetMapping("/game_view/{gamePlayerId}")
@@ -61,7 +62,7 @@ public class SalvoController {
 
             dto.put("id", gp.get().getGame().getGameId());
             dto.put("created", gp.get().getGame().getDateAndTimeOfCreation());
-            dto.put("gameState", "PLACESHIPS");
+            dto.put("gameState", getGameStates(gp.get()).toString());
 
             dto.put("gamePlayers", gp.get().getGame().getGamePlayers()
                                         .stream()
@@ -81,13 +82,16 @@ public class SalvoController {
                                  .collect(Collectors.toList()));
 
 
-            hits.put("self", gp.get().listOfHitsAndMisses());
+
 
             GamePlayer opponent = gp.get().getOpponent();
 
             if(opponent == null) { //evita el error que te tira al entrar a un game sin un oponente
+                hits.put("self", new ArrayList<>());
                 hits.put("opponent",  new ArrayList<>());
+
             } else {
+                hits.put("self", gp.get().listOfHitsAndMisses());
                 hits.put("opponent",  opponent.listOfHitsAndMisses());
             }
 
@@ -104,6 +108,84 @@ public class SalvoController {
     }
 
 
+//------------------------------------CHECK THE GAME STATE AND ASSING THE RESULT----------------------------------------
+
+
+    public GameStates getGameStates(GamePlayer self) {
+
+        GameStates gameState ;
+
+        if(self.getOpponent() == null) {
+            gameState = GameStates.WAITINGFOROPP;
+
+        } else if(!self.shipsPlaced()) {
+            gameState = GameStates.PLACESHIPS;
+
+        } else if (!self.getOpponent().shipsPlaced()) {
+            gameState = GameStates.WAIT;
+
+        } else {
+
+            if(self.checkIfAllShipsSunk()) {
+
+                if (self.getOpponent().checkIfAllShipsSunk() && (self.getSalvoes().size() >= self.getOpponent().getSalvoes().size())) {
+                    gameState = GameStates.TIE;
+                    saveNewScore(self,gameState);
+
+                } else {
+                    gameState = GameStates.LOST;
+                    saveNewScore(self,gameState);
+
+                }
+
+            } else if(self.getOpponent().checkIfAllShipsSunk() && (self.getSalvoes().size() <= self.getOpponent().getSalvoes().size())){
+                gameState = GameStates.WON;
+                saveNewScore(self,gameState);
+
+            }  else if (Util.opponentTurn(self)) {
+                gameState = GameStates.WAIT;
+
+            } else {
+                gameState = GameStates.PLAY;
+
+            }
+
+        }
+
+        return gameState;
+    }
+
+    private void saveNewScore(GamePlayer gamePlayer, GameStates gameState) {
+
+        Score score = null;
+
+        Player player = gamePlayer.getPlayer();
+        Game game = gamePlayer.getGame();
+
+        switch (gameState) {
+
+            case TIE: score = new Score(player, game, 0.5);
+            break;
+
+            case WON: score = new Score(player, game, 1);
+                break;
+
+            case LOST: score = new Score(player, game, 0);
+                break;
+
+        }
+
+        game.addScore(score);
+        gameRepository.save(game);
+
+
+        player.addScore(score);
+        playerRepository.save(player);
+
+        scoreRepository.save(score);
+        gamePlayerRepository.save(gamePlayer);
+
+    }
 
 
 //------------------------------------Salvos Placement----------------------------------------------------
@@ -165,6 +247,8 @@ public class SalvoController {
 
         return response;
     }
+
+
 
 
 }
