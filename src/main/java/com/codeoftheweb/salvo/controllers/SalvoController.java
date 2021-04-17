@@ -232,9 +232,9 @@ public class SalvoController {
 
             } else {
                 salvo.setTurn(salvoTurn);
-
-                salvoRepository.save(salvo);
                 salvo.setGamePlayer(gp.get());
+                salvoRepository.save(salvo);
+
 
                 gp.get().addSalvo(salvo);
                 gamePlayerRepository.save(gp.get());
