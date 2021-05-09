@@ -64,7 +64,7 @@ public class GameController {
 
         Optional<Game> game = gameRepository.findById(gameId);
 
-        if(game.isEmpty()) {
+        if(!game.isPresent()) {
             response = new ResponseEntity<>(Util.toMap("error", "Game not found"), HttpStatus.FORBIDDEN);
 
 

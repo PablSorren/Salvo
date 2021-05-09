@@ -42,7 +42,7 @@ public class SalvoController {
         Optional<GamePlayer> gp = gamePlayerRepository.findById(gamePlayerId);
         ResponseEntity<Map<String, Object>> response;
 
-        if (gp.isEmpty()) {
+        if (!gp.isPresent()) {
 
             response = new ResponseEntity<>(Util.toMap("error", String.format("Game player id %d does not exists", gamePlayerId))
                     , HttpStatus.UNAUTHORIZED);
@@ -199,7 +199,7 @@ public class SalvoController {
         Optional<GamePlayer> gp = gamePlayerRepository.findById(gamePlayerId);
         Player currentPlayer = playerRepository.findByUsername(authentication.getName());
 
-        if(gp.isEmpty()) {
+        if(!gp.isPresent()) {
             response = new ResponseEntity<>(Util.toMap("error", String.format("Game player id %d does not exists", gamePlayerId))
                     , HttpStatus.UNAUTHORIZED);
 

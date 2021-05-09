@@ -253,7 +253,7 @@ public class GamePlayer {
                                         .filter(s -> s.getType() == shipType )
                                         .findFirst();
 
-        if(shipLocations.isEmpty()) {
+        if(!shipLocations.isPresent()) {
             return new ArrayList<>();
         } else {
             return shipLocations.get().getLocations();
